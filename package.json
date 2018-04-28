@@ -8,9 +8,7 @@
   },
   "scripts": {
     "build": "rimraf lib && tsc",
-    "build4debug": "rimraf lib && tsc --inlineSourceMap",
-    "prepublishOnly": "npm run build",
-    "postinstall": "node scripts/postinstall.js"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
