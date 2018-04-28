@@ -1,0 +1,44 @@
+{
+  "name": "docker-startup",
+  "version": "0.0.1",
+  "description": "A start-up tool of docker to exec run command with pre-defined arguments",
+  "main": "lib/",
+  "bin": {
+    "docker-startup": "lib/index.js"
+  },
+  "scripts": {
+    "build": "rimraf lib && tsc",
+    "build4debug": "rimraf lib && tsc --inlineSourceMap",
+    "prepublishOnly": "npm run build",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lonord/docker-startup.git"
+  },
+  "keywords": [
+    "docker",
+    "run",
+    "argument"
+  ],
+  "author": "Loy B. <lonord.b@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lonord/docker-startup/issues"
+  },
+  "homepage": "https://github.com/lonord/docker-startup#readme",
+  "devDependencies": {
+    "@types/node": "^9.4.6",
+    "@types/node-fetch": "^1.6.8",
+    "@types/yamljs": "^0.2.30",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "chalk": "^2.3.2",
+    "commander": "^2.15.1",
+    "is-root": "^2.0.0",
+    "rimraf": "^2.6.2",
+    "yamljs": "^0.3.0"
+  }
+}
