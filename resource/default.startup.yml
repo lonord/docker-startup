@@ -1,0 +1,33 @@
+########################################################################
+#                                                                      #
+#    pre-defined arguments of `docker run` used by docker-startup      #
+#                                                                      #
+########################################################################
+
+# container name (--name argument of docker run)
+containerName: 'some_name'
+
+# deamon mode (-d argument of docker run)
+deamon: true
+
+# mount volumes (-v argument of docker run), relative to volume root or sub directory, optional
+# directoryMount:
+#   - 'path/to/data:/data'
+#   - 'path/to/other:/var/run/other'
+
+# special type of mount volumes, in prepare command, if source config file not exist, it will create by
+# copying from image
+# configFileMount:
+#   - 'path/to/config.conf:/etc/config.conf'
+#   - 'path/to/other.conf:/etc/other.conf'
+
+# port forward (-p argument of docker run), optional
+# portMap:
+#   - '80:8080'
+#   - '3306:3306'
+
+# sub directory relative to volume root, fallback to use containerName, optional
+# volumeSubDirectory: 'sub_name'
+
+# other arguments of docker run, optional
+# otherArguments: '--privileged --network=host'

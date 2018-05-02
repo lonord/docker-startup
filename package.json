@@ -4,7 +4,7 @@
   "description": "A start-up tool of docker to exec run command with pre-defined arguments",
   "main": "lib/",
   "bin": {
-    "docker-startup": "lib/index.js"
+    "docker-startup": "lib/cli.js"
   },
   "scripts": {
     "build": "rimraf lib && tsc",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/lonord/docker-startup#readme",
   "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
     "@types/node": "^9.4.6",
     "@types/node-fetch": "^1.6.8",
     "@types/yamljs": "^0.2.30",
@@ -36,6 +37,7 @@
     "chalk": "^2.3.2",
     "commander": "^2.15.1",
     "is-root": "^2.0.0",
+    "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2",
     "yamljs": "^0.3.0"
   }
