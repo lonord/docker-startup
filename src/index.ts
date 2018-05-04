@@ -70,7 +70,7 @@ export async function prepare(option: CommonOption) {
 			continue
 		}
 		const cmd = `docker run --rm -v "${dirname(m.hostPath)}:/copy_data_tmp" ${option.imageName} ` +
-			`stat ${m.containerPath} > /dev/null && cp -r ${m.containerPath} /copy_data_tmp/${basename(m.hostPath)}`
+			`bash -c "stat ${m.containerPath} > /dev/null && cp -r ${m.containerPath} /copy_data_tmp/${basename(m.hostPath)}"`
 		await execAsync(cmd, {
 			cwd: option.cwd,
 			env: process.env
