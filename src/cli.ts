@@ -55,7 +55,7 @@ program
 program
 	.command('run <image>')
 	.description('exec `docker run` command using pre-defined arguments in startup.yml')
-	.alias('p')
+	.alias('r')
 	.option('-c, --config-file <name>', 'specific another config file name to use')
 	.option('-r, --volume-root <dir>', 'root directory of volume to mount, fallback using VOLUME_ROOT env')
 	.action((image, cmd) => {

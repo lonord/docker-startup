@@ -1,6 +1,6 @@
 {
   "name": "docker-startup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A start-up tool of docker to exec run command with pre-defined arguments",
   "main": "lib/",
   "bin": {
