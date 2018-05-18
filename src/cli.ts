@@ -31,16 +31,10 @@ program
 	.description('prepare image config by startup.yml, copying conf files from image if needed')
 	.alias('p')
 	.option('-c, --config-file <name>', 'specific another config file name to use')
-	.option('-r, --volume-root <dir>', 'root directory of volume to mount, fallback using VOLUME_ROOT env')
 	.action((image, cmd) => {
 		handled = true
-		const volumeRoot = cmd.volumeRoot || process.env.VOLUME_ROOT
-		if (!volumeRoot) {
-			console.error('error: missing volume root argument, specific by --volume-root <dir>, or set VOLUME_ROOT env')
-		}
 		const configFile = cmd.configFile
 		prepare({
-			volumeRoot,
 			configFile,
 			cwd: process.cwd(),
 			imageName: image
@@ -57,16 +51,10 @@ program
 	.description('exec `docker run` command using pre-defined arguments in startup.yml')
 	.alias('r')
 	.option('-c, --config-file <name>', 'specific another config file name to use')
-	.option('-r, --volume-root <dir>', 'root directory of volume to mount, fallback using VOLUME_ROOT env')
 	.action((image, cmd) => {
 		handled = true
-		const volumeRoot = cmd.volumeRoot || process.env.VOLUME_ROOT
-		if (!volumeRoot) {
-			console.error('error: missing volume root argument, specific by --volume-root <dir>, or set VOLUME_ROOT env')
-		}
 		const configFile = cmd.configFile
 		startup({
-			volumeRoot,
 			configFile,
 			cwd: process.cwd(),
 			imageName: image

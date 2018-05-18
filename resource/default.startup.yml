@@ -26,8 +26,5 @@ deamon: true
 #   - '80:8080'
 #   - '3306:3306'
 
-# sub directory relative to volume root, fallback to use containerName, optional
-# volumeSubDirectory: 'sub_name'
-
 # other arguments of docker run, optional
 # otherArguments: '--privileged --network=host'
