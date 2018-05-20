@@ -57,7 +57,7 @@ export async function prepare(option: CommonOption) {
 	const c = await readConfig(option)
 	const fileMap = getVolumeMap(
 		c.configFileMount,
-		getAbsolutePath(option.configFile, option.cwd)
+		getConfigFileDir(option.configFile, option.cwd)
 	)
 	for (const m of fileMap) {
 		const ext = await existsAsync(m.hostPath)
@@ -84,7 +84,7 @@ export async function prepare(option: CommonOption) {
 
 export async function startup(option: CommonOption) {
 	const c = await readConfig(option)
-	const args = generateDockerRunArguments(c, getAbsolutePath(option.configFile, option.cwd))
+	const args = generateDockerRunArguments(c, getConfigFileDir(option.configFile, option.cwd))
 	const cmd = 'docker run' + args + option.imageName
 	const execResult = await execAsync(cmd, {
 		cwd: option.cwd,
@@ -110,7 +110,7 @@ async function readConfig(option: CommonOption): Promise<ConfigProps> {
 	}
 }
 
-function getVolumeMap(mountMap: string[], volumeRoot: string): PathMap[] {
+function getVolumeMap(mountMap: string[], configFileDir: string): PathMap[] {
 	const rs: PathMap[] = []
 	for (const m of mountMap) {
 		const s = m.split(':')
@@ -119,7 +119,7 @@ function getVolumeMap(mountMap: string[], volumeRoot: string): PathMap[] {
 		}
 		const src = s[0]
 		const dest = s[1]
-		const fullSrc = join(volumeRoot, src)
+		const fullSrc = getFullPath(src, configFileDir)
 		rs.push({
 			hostPath: tailEndSlash(fullSrc),
 			containerPath: tailEndSlash(dest)
@@ -132,7 +132,7 @@ function tailEndSlash(str: string) {
 	return str && str.endsWith('/') ? str.substr(0, str.length - 1) : str
 }
 
-function generateDockerRunArguments(c: ConfigProps, volumeRoot: string) {
+function generateDockerRunArguments(c: ConfigProps, configFileDir: string) {
 	let args = ''
 	if (c.deamon) {
 		args += ' -d'
@@ -143,11 +143,11 @@ function generateDockerRunArguments(c: ConfigProps, volumeRoot: string) {
 	for (const p of c.portMap) {
 		args += ' -p ' + p
 	}
-	const fileVolumeMap = getVolumeMap(c.configFileMount, volumeRoot)
+	const fileVolumeMap = getVolumeMap(c.configFileMount, configFileDir)
 	for (const v of fileVolumeMap) {
 		args += ` -v ${v.hostPath}:${v.containerPath}`
 	}
-	const dirVolumeMap = getVolumeMap(c.directoryMount, volumeRoot)
+	const dirVolumeMap = getVolumeMap(c.directoryMount, configFileDir)
 	for (const v of dirVolumeMap) {
 		args += ` -v ${v.hostPath}:${v.containerPath}`
 	}
@@ -158,15 +158,22 @@ function generateDockerRunArguments(c: ConfigProps, volumeRoot: string) {
 	return args
 }
 
-function getAbsolutePath(configFile: string, cwd: string) {
+function getConfigFileDir(configFile: string, cwd: string) {
 	if (!configFile) {
 		return cwd
 	}
-	if (configFile.startsWith('~/')) {
-		return dirname(join(homedir(), configFile.substr(2)))
+	return dirname(getFullPath(dirname(configFile), cwd))
+}
+
+function getFullPath(path: string, relativeDir: string) {
+	if (!path) {
+		return relativeDir
 	}
-	if (!configFile.startsWith('/')) {
-		return dirname(join(cwd, configFile))
+	if (path.startsWith('~/')) {
+		return join(homedir(), path.substr(2))
 	}
-	return dirname(configFile)
+	if (!path.startsWith('/')) {
+		return join(relativeDir, path)
+	}
+	return path
 }
